@@ -4,6 +4,8 @@
 // ==============================================================================
 
 var express = require("express");
+const apiRoutes = require("./routes/apiRoutes");
+const htmlRoutes = require("./routes/htmlRoutes");
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -20,7 +22,7 @@ var PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //this gives access to the front end materials
-app.use(express.static("./public"))
+app.use(express.static("./public"));
 
 // ================================================================================
 // ROUTER
@@ -28,14 +30,12 @@ app.use(express.static("./public"))
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
 // ================================================================================
 
-require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+app.use("/api", apiRoutes);
+app.use("/", htmlRoutes);
 
 // =============================================================================
 // LISTENER
 // The below code effectively "starts" our server
 // =============================================================================
 
-app.listen(PORT, function() {
-    console.log("App listening on PORT: " + PORT);
-});
+app.listen(PORT, () => console.log(`App listening on PORT: ${PORT}`));
